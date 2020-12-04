@@ -21,7 +21,6 @@ public:
 	string getFirstName(){return firstName;}
 	string getLastName(){return lastName;}
 	float getBalance(){return balance;}
-	void InsufficientFunds(){cout<<"Low Balance\n";}
 	void Deposit(float amount);
 	void Withdraw(float amount);
 	static void setLastAccountNumber(long accountNumber);
@@ -112,7 +111,7 @@ int main()
 			cin>>accountNumber;
 			b.CloseAccount(accountNumber);
 			cout<<endl<<"Account is Closed"<<endl;
-			break
+			break;
 			case 6:
 			b.ShowAllAccount();
 			break;
@@ -139,9 +138,9 @@ void Account::Deposit(float amount)
 }
 void Account::Withdraw(float amount)
 {
-	if(balace-amount<MIN_BALANCE)
+	if(balance-amount<MIN_BALANCE)
 	{
-		throw InsufficientFunds();
+		throw "InsufficientFunds";
 	}
 	balance-=amount;
 }
@@ -178,9 +177,76 @@ ostream & operator<<(ostream &os, Account &acc)
 	return os;
 }
 
-/*Bank::Bank()
+Bank::Bank()
 {
-
+	Account account;
+	ifstream infile;
+	infile.open("Bank.data");
+	if(!infile)
+		return;
+	while(!infile.eof())
+	{
+		infile>>account;
+		accounts.insert(pair<long,Account>(account.getAccNo(),account));
+	}
+	Account::setLastAccountNumber(account.getAccNo());
+	infile.close();
+}
+Account Bank::OpenAccount(string fname,string lname,float balance)
+{
+	ofstream outfile;
+	Account account(fname, lname, balance);
+	accounts.insert(pair<long,Account>(account.getAccNo(),account));
+	outfile.open("Bank.data", ios::trunc);
+	map<long,Account>::iterator itr;
+    for(itr=accounts.begin();itr!=accounts.end();itr++)
+    {
+       outfile<<itr->second;
+    }
+    outfile.close();
+    return account;
+}
+Account Bank::BalanceEnquiry(long accountNumber)
+{
+	map<long,Account>::iterator itr=accounts.find(accountNumber);
+	return itr->second;
+}
+Account Bank::Deposit(long accountNumber, float amount)
+{
+	map<long,Account>::iterator itr=accounts.find(accountNumber);
+	itr->second.Withdraw(amount);
+	return itr->second;
+}
+Account Bank::Withdraw(long accountNumber,float amount)
+{
+	map<long,Account>::iterator itr=accounts.find(accountNumber);
+	itr->second.Withdraw(amount);
+	return itr->second;
+}
+void Bank::CloseAccount(long accountNumber)
+{
+	map<long,Account>::iterator itr=accounts.find(accountNumber);
+	cout<<"Account Deleted"<<endl<<itr->second;
+	accounts.erase(accountNumber);
+}
+void Bank::ShowAllAccount()
+{
+	map<long, Account>::iterator itr;
+	for(itr=accounts.begin();itr!=accounts.end();itr++)
+	{
+		cout<<"Accounts "<<itr->first<<endl<<itr->second<<endl;
+	}
+}
+Bank::~Bank()
+{
+	ofstream outfile;
+	outfile.open("Bank.data",ios::trunc);
+	map<long,Account>::iterator itr;
+	for(itr=accounts.begin();itr!=accounts.end();itr++)
+	{
+		outfile<<itr->second;
+	}
+	outfile.close();
 }
 
 
