@@ -71,46 +71,46 @@ int main()
 		switch(choice)
 		{
 			case 1:
-			cout<<"Enter First Name: ";
+			cout<<"		***Enter First Name: ";
 			cin>>fname;
-			cout<<"Enter Last Name: ";
+			cout<<"		***Enter Last Name: ";
 			cin>>lname;
-			cout<<"Enter Initial Balance: ";
+			cout<<"		***Enter Initial Balance: ";
 			cin>>balance;
 			acc=b.OpenAccount(fname,lname,balance);
-			cout<<endl<<"Congratulations Account is Created"<<endl;
+			cout<<endl<<"	 	***Congratulations Account is Created***"<<endl;
 			cout<<acc;
 			break;
 			case 2:
-			cout<<"Enter Account Number: ";
+			cout<<"		***Enter Account Number: ";
 			cin>>accountNumber;
 			acc=b.BalanceEnquiry(accountNumber);
-			cout<<endl<<"Your Account Details"<<endl;
+			cout<<endl<<"		 ***Your Account Details***"<<endl;
 			cout<<acc;
 			break;
 			case 3:
-			cout<<"Enter Account Number:";
+			cout<<"		***Enter Account Number:";
 			cin>>accountNumber;
-			cout<<"Enter Balance:";
+			cout<<"		***Enter Balance:";
 			cin>>amount;
 			acc=b.Deposit(accountNumber, amount);
-			cout<<endl<<"Account is Deposited"<<endl;
+			cout<<endl<<"	 ***Account is Deposited***"<<endl;
 			cout<<acc;
 			break;
 			case 4:
-			cout<<"Enter Account Number:";
+			cout<<"		***Enter Account Number:";
 			cin>>accountNumber;
-			cout<<"Enter Balance:";
+			cout<<"		***Enter Balance:";
 			cin>>amount;
 			acc=b.Withdraw(accountNumber, amount);
-			cout<<endl<<"Amount Withdrawn"<<endl;
+			cout<<endl<<" 		***Amount Withdrawn***"<<endl;
 			cout<<acc;
 			break;
 			case 5:
-			cout<<"Enter Account Number:";
+			cout<<"		***Enter Account Number:";
 			cin>>accountNumber;
 			b.CloseAccount(accountNumber);
-			cout<<endl<<"Account is Closed"<<endl;
+			cout<<endl<<"	 ***Account is Closed***"<<endl;
 			break;
 			case 6:
 			b.ShowAllAccount();
@@ -138,11 +138,14 @@ void Account::Deposit(float amount)
 }
 void Account::Withdraw(float amount)
 {
-	if(balance-amount<MIN_BALANCE)
+	if((balance-amount)<MIN_BALANCE)
 	{
-		throw "InsufficientFunds";
+		cout<<"		***InsufficientFunds***";
 	}
+	else
+	{
 	balance-=amount;
+    }
 }
 void Account::setLastAccountNumber(long accountNumber)
 {
@@ -214,7 +217,7 @@ Account Bank::BalanceEnquiry(long accountNumber)
 Account Bank::Deposit(long accountNumber, float amount)
 {
 	map<long,Account>::iterator itr=accounts.find(accountNumber);
-	itr->second.Withdraw(amount);
+	itr->second.Deposit(amount);
 	return itr->second;
 }
 Account Bank::Withdraw(long accountNumber,float amount)
@@ -248,5 +251,5 @@ Bank::~Bank()
 	}
 	outfile.close();
 }
-
+/*                                      THANK YOU                                                            */
 
